@@ -69,15 +69,17 @@ double Array::ReadCell(int x, int y, char* mode) {
 		
 		//cell[x][y]의 elapsedTime 측정완료 시점
 		static_cast<AnalogNVM*>(cell[x][y])->end = std::chrono::system_clock::now();
-		std::chrono::duration<double> Elapsed = end - start;
+		std::chrono::duration<double> Elapsed = static_cast<AnalogNVM*>(cell[x][y])->end - static_cast<AnalogNVM*>(cell[x][y])->start;
 		static_cast<AnalogNVM*>(cell[x][y])->elapsed = Elapsed;
 		
 		//드리프트 효과 수식 표현
 		if (static_cast<AnalogNVM*>(cell[x][y])->conductance > 2e-06 ){
 			static_cast<AnalogNVM*>(cell[x][y])->driftCoeff = 0.0;
 		}else{
-			static_cast<AnalogNVM*>(cell[x][y])->driftCoeff = 0.2 * log((static_cast<AnalogNVM*>(cell[x][y])->conductance) / 0.5e-06) + 0.1;			
-		static_cast<AnalogNVM*>(cell[x][y])->conductance *=(1e-06 / static_cast<AnalogNVM*>(cell[x][y])->elapsed)^(static_cast<AnalogNVM*>(cell[x][y])->driftCoeff);
+			static_cast<AnalogNVM*>(cell[x][y])->driftCoeff = 0.2 * log((static_cast<AnalogNVM*>(cell[x][y])->conductance) / 0.5e-06) + 0.1;
+		}
+		
+		static_cast<AnalogNVM*>(cell[x][y])->conductance *=(1e-06 / (static_cast<AnalogNVM*>(cell[x][y])->elapsed))^(static_cast<AnalogNVM*>(cell[x][y])->driftCoeff);
 		
 		if (static_cast<eNVM*>(cell[x][y])->nonlinearIV) 
         {
