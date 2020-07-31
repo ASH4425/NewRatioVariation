@@ -135,7 +135,7 @@ public:
 	//드리프트 효과 구현 위한 변수 생성
 	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed;
+	double elapsed;
 	double driftCoeff;
 	
 
