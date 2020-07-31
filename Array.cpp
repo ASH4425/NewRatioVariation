@@ -46,7 +46,7 @@ double Array::ReadCell(int x, int y, char* mode) {
 
 	//드리프트 효과 단순화 측정
 
-	double driftCoeff;
+	/*double driftCoeff;
 	double driftCoeffDepend = 0.2;
 	const double 
 	r=2;	
@@ -59,7 +59,7 @@ double Array::ReadCell(int x, int y, char* mode) {
 		driftCoeff = driftCoeffDepend * log((static_cast<eNVM*>(cell[x][y])->conductance) / 0.5e-6) + 0.1;
 	}
 
-	static_cast<eNVM*>(cell[x][y])->conductance *= pow((1 / ratio), driftCoeff);
+	static_cast<eNVM*>(cell[x][y])->conductance *= pow((1 / ratio), driftCoeff);*/
 	
 	
 	if (AnalogNVM *temp = dynamic_cast<AnalogNVM*>(**cell)) // Analog eNVM
