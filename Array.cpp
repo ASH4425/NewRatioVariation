@@ -56,7 +56,7 @@ double Array::ReadCell(int x, int y, char* mode) {
 		driftCoeff = 0.0;
 	}
 	else {
-		driftCoeff = driftCoeffDepend * log(static_cast<eNVM*>(cell[x][y])->conductance / 0.5e-6) + 0.1;
+		driftCoeff = driftCoeffDepend * log((static_cast<eNVM*>(cell[x][y])->conductance) / 0.5e-6) + 0.1;
 	}
 
 	static_cast<eNVM*>(cell[x][y])->conductance *= pow((1 / ratio), driftCoeff);
