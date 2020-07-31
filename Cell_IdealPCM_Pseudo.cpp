@@ -436,6 +436,23 @@ void RealDevice::Write(double deltaWeightNormalized, double weight, double minWe
 		}
 	}
 	
+	//드리프트 효과 단순화 측정
+
+	double driftCoeff;
+	double driftCoeffDepend = 0.2;
+	const double 
+	r=2;	
+	double ratio=r;
+
+	if (conductanceNew > 2e-6) {
+		driftCoeff = 0.0;
+	}
+	else {
+		driftCoeff = driftCoeffDepend * log(conductanceNew / 0.5e-6) + 0.1;
+	}
+
+	conductanceNew *= pow((1 / ratio), driftCoeff);
+	
 	conductancePrev = conductance;
 	conductance = conductanceNew;
 }
