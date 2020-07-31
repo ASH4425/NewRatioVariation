@@ -69,7 +69,8 @@ double Array::ReadCell(int x, int y, char* mode) {
 		
 		//cell[x][y]의 elapsedTime 측정완료 시점
 		static_cast<AnalogNVM*>(cell[x][y])->end = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<double> Elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(static_cast<AnalogNVM*>(cell[x][y])->end-static_cast<AnalogNVM*>(cell[x][y])->start);
+		double Elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(static_cast<AnalogNVM*>(cell[x][y])->end - static_cast<AnalogNVM*>(cell[x][y])->start).count();
+		//std::chrono::duration<double> Elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(static_cast<AnalogNVM*>(cell[x][y])->end-static_cast<AnalogNVM*>(cell[x][y])->start);
 		//std::chrono::duration<double>(Elapsed).count() = static_cast<AnalogNVM*>(cell[x][y])->end - static_cast<AnalogNVM*>(cell[x][y])->start;
 		static_cast<AnalogNVM*>(cell[x][y])->elapsed = Elapsed;
 		
