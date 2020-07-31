@@ -41,6 +41,8 @@
 
 #include <random>
 #include <vector>
+#include <chrono>
+#include <time.h>
 
 class Cell {
 public:
@@ -129,6 +131,12 @@ public:
 	double PWinitLTD;   // Initial write pulse width for LTD or weight decrease (s)
 	double PWstepLTD;   // Write pulse width for LTD or weight decrease (s)
 	double writeVoltageSquareSum;   // Sum of V^2 of non-identical pulses (for weight update energy calculation in subcircuits)
+	
+	//드리프트 효과 구현 위한 변수 생성
+	auto start = std::chrono::system_clock::now();
+	auto end = std::chrono::system_clock::now();
+	double elapsed;
+	
 
 	virtual double Read(double voltage) = 0;
 	virtual void Write(double deltaWeightNormalized, double weight, double minWeight, double maxWeight) = 0;
