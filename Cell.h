@@ -133,8 +133,8 @@ public:
 	double writeVoltageSquareSum;   // Sum of V^2 of non-identical pulses (for weight update energy calculation in subcircuits)
 	
 	//드리프트 효과 구현 위한 변수 생성
-	auto start = std::chrono::system_clock::now();
-	auto end = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 	double elapsed;
 	double driftCoeff;
 	
