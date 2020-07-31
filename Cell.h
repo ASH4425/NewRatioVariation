@@ -136,6 +136,7 @@ public:
 	auto start = std::chrono::system_clock::now();
 	auto end = std::chrono::system_clock::now();
 	double elapsed;
+	double driftCoeff;
 	
 
 	virtual double Read(double voltage) = 0;
