@@ -48,7 +48,9 @@ double Array::ReadCell(int x, int y, char* mode) {
 
 	double driftCoeff;
 	double driftCoeffDepend = 0.2;
-	double ratio = 2;
+	const double 
+	r=2;	
+	double ratio=r;
 
 	if (static_cast<eNVM*>(cell[x][y])->conductance > 2e-6) {
 		driftCoeff = 0.0;
