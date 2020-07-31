@@ -69,7 +69,7 @@ double Array::ReadCell(int x, int y, char* mode) {
 		
 		//cell[x][y]의 elapsedTime 측정완료 시점
 		static_cast<AnalogNVM*>(cell[x][y])->end = std::chrono::system_clock::now();
-		std::chrono::duration<double> Elapsed = static_cast<AnalogNVM*>(cell[x][y])->end - static_cast<AnalogNVM*>(cell[x][y])->start;
+		std::chrono::duration<double>(Elapsed).count() = static_cast<AnalogNVM*>(cell[x][y])->end - static_cast<AnalogNVM*>(cell[x][y])->start;
 		static_cast<AnalogNVM*>(cell[x][y])->elapsed = Elapsed;
 		
 		//드리프트 효과 수식 표현
