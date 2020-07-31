@@ -42,7 +42,8 @@
 #include "formula.h"
 #include "Array.h"
 #include "Cell.h"
-
+#include <chrono>
+#include <time.h>
 
 /* General eNVM */
 void AnalogNVM::WriteEnergyCalculation(double wireCapCol) {
