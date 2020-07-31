@@ -38,13 +38,28 @@
 
 #include "formula.h"
 #include "Array.h"
-#include <chrono>
-#include <time.h>
 
 int counter=0;
 double Array::ReadCell(int x, int y, char* mode) {
     // mode is only for the 3T1C cell to select LSB or MSB
     // it should be "MSB_LTP","MSB_LTD" or "LSB" 
+
+	//드리프트 효과 단순화 측정
+
+	double driftCoeff;
+	double driftCoeffDepend = 0.2;
+	double ratio = 2;
+
+	if (static_cast<eNVM*>(cell[x][y])->conductance > 2e-6) {
+		driftCoeff = 0.0;
+	}
+	else {
+		driftCoeff = driftCoeffDepend * log(static_cast<eNVM*>(cell[x][y])->conductance / 0.5e-6) + 0.1;
+	}
+
+	static_cast<eNVM*>(cell[x][y])->conductance *= pow((1 / ratio), driftCoeff);
+	
+	
 	if (AnalogNVM *temp = dynamic_cast<AnalogNVM*>(**cell)) // Analog eNVM
     {	
 		double readVoltage = static_cast<eNVM*>(cell[x][y])->readVoltage;
@@ -67,21 +82,6 @@ double Array::ReadCell(int x, int y, char* mode) {
 		}
 		double cellCurrent;
 		
-		//cell[x][y]의 elapsedTime 측정완료 시점
-		static_cast<AnalogNVM*>(cell[x][y])->end = std::chrono::high_resolution_clock::now();
-		double Elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(static_cast<AnalogNVM*>(cell[x][y])->end - static_cast<AnalogNVM*>(cell[x][y])->start).count();
-		//std::chrono::duration<double> Elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(static_cast<AnalogNVM*>(cell[x][y])->end-static_cast<AnalogNVM*>(cell[x][y])->start);
-		//std::chrono::duration<double>(Elapsed).count() = static_cast<AnalogNVM*>(cell[x][y])->end - static_cast<AnalogNVM*>(cell[x][y])->start;
-		static_cast<AnalogNVM*>(cell[x][y])->elapsed = Elapsed;
-		
-		//드리프트 효과 수식 표현
-		if (static_cast<AnalogNVM*>(cell[x][y])->conductance > 2e-06 ){
-			static_cast<AnalogNVM*>(cell[x][y])->driftCoeff = 0.0;
-		}else{
-			static_cast<AnalogNVM*>(cell[x][y])->driftCoeff = 0.2 * log((static_cast<AnalogNVM*>(cell[x][y])->conductance) / 0.5e-06) + 0.1;
-		}
-		
-		static_cast<AnalogNVM*>(cell[x][y])->conductance *= pow((1e-06 / (static_cast<AnalogNVM*>(cell[x][y])->elapsed)), (static_cast<AnalogNVM*>(cell[x][y])->driftCoeff));
 		
 		if (static_cast<eNVM*>(cell[x][y])->nonlinearIV) 
         {
@@ -192,8 +192,6 @@ void Array::WriteCell(int x, int y, double deltaWeight, double weight, double ma
 						bool regular /* False: ideal write, True: regular write considering device properties */) {
 	// TODO: include wire resistance
 	
-	//cell[x][y]의 elapsedTime 측정 시작 시점
-	static_cast<AnalogNVM*>(cell[x][y])->start = std::chrono::high_resolution_clock::now();
 	
 	if (AnalogNVM *temp = dynamic_cast<AnalogNVM*>(**cell)) // Analog eNVM
     { 
